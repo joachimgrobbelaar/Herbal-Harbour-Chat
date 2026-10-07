@@ -3,6 +3,7 @@ FROM python:3.12-slim
 # Install system dependencies, Node.js, and supervisor
 RUN apt-get update && apt-get install -y --no-install-recommends \
     curl \
+    git \
     supervisor \
     ca-certificates \
     gnupg \
@@ -20,7 +21,7 @@ COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Install WhatsApp bridge Node dependencies
-COPY bridges/whatsapp/package.json ./bridges/whatsapp/
+COPY bridges/whatsapp/package*.json ./bridges/whatsapp/
 RUN cd ./bridges/whatsapp && npm install --omit=dev
 
 # Copy project files
