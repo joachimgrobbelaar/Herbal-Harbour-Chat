@@ -26,7 +26,8 @@ RUN cd ./bridges/whatsapp && npm install --omit=dev
 # Copy project files
 COPY . .
 
-# Expose FastAPI port
+# Expose FastAPI and Render ports
+EXPOSE 10000
 EXPOSE 8000
 EXPOSE 3001
 
