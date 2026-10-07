@@ -12,7 +12,8 @@ const axios = require('axios');
 const path = require('path');
 
 const PORT = process.env.WHATSAPP_BRIDGE_PORT || 3001;
-const FASTAPI_URL = process.env.FASTAPI_URL || 'http://localhost:8000/api/bridge/whatsapp';
+const FASTAPI_PORT = process.env.PORT || 8000;
+const FASTAPI_URL = process.env.FASTAPI_URL || `http://localhost:${FASTAPI_PORT}/api/bridge/whatsapp`;
 const AUTH_DIR = path.join(__dirname, 'auth_info_baileys');
 
 let sock = null;

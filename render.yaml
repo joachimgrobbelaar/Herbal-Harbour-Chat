@@ -1,21 +1,17 @@
 services:
   - type: web
     name: herbal-harbour-chat
-    runtime: docker
+    env: docker
     plan: free
+    region: oregon
     dockerfilePath: ./Dockerfile
+    healthCheckPath: /health
     envVars:
       - key: PORT
-        value: 8000
+        value: 10000
       - key: WHATSAPP_BRIDGE_PORT
         value: 3001
       - key: WHATSAPP_BRIDGE_URL
         value: http://localhost:3001
       - key: GEMINI_MODEL
         value: gemini-2.5-flash
-      - key: GEMINI_API_KEY
-        sync: false
-      - key: INSTAGRAM_USERNAME
-        sync: false
-      - key: INSTAGRAM_PASSWORD
-        sync: false
