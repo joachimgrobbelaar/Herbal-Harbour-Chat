@@ -1,0 +1,52 @@
+{
+  "business": {
+    "name": "Herbal Harbour",
+    "tagline": "Holistic Herbal Remedies & Botanical Wellness",
+    "mission": "Empowering natural wellbeing through sustainably sourced organic herbs, small-batch handcrafted teas, and therapeutic botanical tinctures.",
+    "location": "Coastal Apothecary, 42 Marina Boulevard, Harbour View",
+    "operating_hours": "Monday - Friday: 09:00 - 18:00 (EST) | Saturday: 10:00 - 16:00 (EST) | Sunday: Closed",
+    "contact": {
+      "email": "support@herbalharbour.com",
+      "website": "https://www.herbalharbour.com",
+      "instagram": "@herbalharbour",
+      "whatsapp": "+1 (555) 347-2250"
+    }
+  },
+  "faq": [
+    {
+      "topic": "Ordering & How to Buy",
+      "question": "How can I place an order?",
+      "answer": "You can order directly through our official online apothecary at www.herbalharbour.com, or drop a message here with the items and quantity you would like, and our team will generate a direct checkout link for you."
+    },
+    {
+      "topic": "Shipping & Delivery",
+      "question": "What are your shipping rates and delivery times?",
+      "answer": "Standard domestic shipping is $4.99 (Free on all orders over $50). Delivery takes 2-4 business days. Express next-day courier is available at checkout for $12.99. We currently ship domestically and to select international destinations."
+    },
+    {
+      "topic": "Payment Methods",
+      "question": "What payment methods do you accept?",
+      "answer": "We accept major credit/debit cards (Visa, MasterCard, Amex), Apple Pay, Google Pay, PayPal, and WhatsApp Pay where available."
+    },
+    {
+      "topic": "Returns & Satisfaction Guarantee",
+      "question": "What is your return policy?",
+      "answer": "We offer a 30-day Herbal Harmony Guarantee. If an unopened product or blend does not meet your expectations, return it within 30 days for a full refund or exchange. For opened products, contact support@herbalharbour.com for store credit assistance."
+    },
+    {
+      "topic": "Ingredient Sourcing & Quality",
+      "question": "Are your ingredients organic and pesticide-free?",
+      "answer": "Yes! 100% of our herbs, flowers, and roots are certified USDA organic or sustainably wildcrafted by certified local foragers. We third-party lab test every batch for heavy metals, pesticides, and microbial purity."
+    },
+    {
+      "topic": "Medical Disclaimer & Safety",
+      "question": "Can your products treat, cure, or diagnose diseases?",
+      "answer": "Disclaimer: Herbal Harbour products and botanical information provided by this assistant are intended for educational and general wellness purposes only. Our products and statements have not been evaluated by the FDA and are not intended to diagnose, treat, cure, or prevent any illness or disease. Always consult your qualified healthcare practitioner before starting any herbal regimen, especially if you are pregnant, nursing, taking prescription medications, or under medical supervision."
+    },
+    {
+      "topic": "Consultations & Custom Blends",
+      "question": "Do you offer herbal consultations or customized blends?",
+      "answer": "Yes! Our clinical herbalists offer 30-minute virtual wellness consultations and can formulate customized herbal tea infusions or botanical tinctures tailored to your constitution. Book online at www.herbalharbour.com/consultations."
+    }
+  ]
+}

@@ -1,0 +1,110 @@
+{
+  "business_name": "Herbal Harbour",
+  "currency": "USD",
+  "products": [
+    {
+      "id": "hh-tea-01",
+      "name": "Calm Cove Chamomile & Lavender Tea",
+      "category": "Herbal Teas",
+      "price": 14.50,
+      "size": "50g loose leaf (approx. 25 servings)",
+      "description": "A soothing blend of organic Egyptian chamomile blossoms and French lavender buds designed to ease tension and promote deep sleep.",
+      "ingredients": ["Organic Chamomile Flowers", "Organic French Lavender", "Organic Lemon Balm", "Organic Spearmint"],
+      "benefits": ["Promotes restful sleep", "Relieves daily stress and anxiety", "Caffeine-free soothing evening ritual"],
+      "directions": "Steep 1-2 teaspoons in freshly boiled water (95°C / 203°F) for 5-7 minutes. Enjoy before bedtime.",
+      "cautions": "Avoid if you have an allergy to ragweed or daisy family plants. Consult your physician if pregnant or nursing.",
+      "in_stock": true
+    },
+    {
+      "id": "hh-tea-02",
+      "name": "Harbour Sunrise Citrus Green Tea",
+      "category": "Herbal Teas",
+      "price": 16.00,
+      "size": "75g loose leaf (approx. 35 servings)",
+      "description": "An invigorating morning blend of high-altitude Sencha green tea with dried organic orange peel, lemongrass, and ginger.",
+      "ingredients": ["Organic Sencha Green Tea", "Organic Lemongrass", "Dried Sweet Orange Peel", "Organic Ginger Root"],
+      "benefits": ["Clean, jitter-free morning energy", "Antioxidant-rich", "Supports metabolic health"],
+      "directions": "Steep 1 teaspoon in 80°C (175°F) water for 2-3 minutes. Do not overheat to preserve delicate tea polyphenols.",
+      "cautions": "Contains mild natural caffeine from green tea. Not recommended right before sleep.",
+      "in_stock": true
+    },
+    {
+      "id": "hh-tea-03",
+      "name": "Deep Root Turmeric & Ginger Blend",
+      "category": "Herbal Teas",
+      "price": 15.00,
+      "size": "60g loose leaf (approx. 30 servings)",
+      "description": "A potent warming infusion combining golden turmeric root, spicy ginger, black pepper, and cinnamon to combat systemic inflammation.",
+      "ingredients": ["Organic Turmeric Root", "Organic Ginger Root", "Organic Ceylon Cinnamon", "Black Peppercorns", "Licorice Root"],
+      "benefits": ["Supports joint mobility and post-exercise recovery", "Powerful anti-inflammatory", "Digestive comfort"],
+      "directions": "Simmer or steep 1-2 teaspoons in boiling water for 8-10 minutes. Can be paired with warm oat milk for a golden latte.",
+      "cautions": "Consult doctor if taking blood thinners or gallstone medication.",
+      "in_stock": true
+    },
+    {
+      "id": "hh-tinc-01",
+      "name": "Ashwagandha Tranquility Drops",
+      "category": "Tinctures & Elixirs",
+      "price": 28.00,
+      "size": "50ml dropper bottle",
+      "description": "High-concentration hydro-ethanolic extract of KSM-66 certified organic Ashwagandha root to modulate adrenal fatigue and cortisol response.",
+      "ingredients": ["Organic Withania Somnifera (Ashwagandha) Root Extract", "Organic Cane Alcohol (35%)", "Purified Spring Water"],
+      "benefits": ["Balances cortisol and stress resilience", "Enhances stamina without stimulation", "Improves mood and sleep quality"],
+      "directions": "Take 1 full dropper (approx. 30 drops / 1ml) directly under the tongue or dissolved in water/juice 1-2 times daily.",
+      "cautions": "Do not consume during pregnancy. Discontinue 2 weeks prior to surgery.",
+      "in_stock": true
+    },
+    {
+      "id": "hh-tinc-02",
+      "name": "Lion's Mane Clarity Tincture",
+      "category": "Tinctures & Elixirs",
+      "price": 32.00,
+      "size": "50ml dropper bottle",
+      "description": "Dual-extracted (hot water + alcohol) fruiting body Lion's Mane mushroom extract formulated to stimulate Nerve Growth Factor (NGF).",
+      "ingredients": ["Organic Hericium Erinaceus (Lion's Mane) Fruiting Body Extract", "Organic Cane Alcohol (30%)", "Spring Water"],
+      "benefits": ["Enhances mental clarity and sustained focus", "Promotes neurogenesis and memory retention", "Supports long-term cognitive health"],
+      "directions": "Take 1-2 droppers in the morning with coffee, tea, or a smoothie.",
+      "cautions": "Consult a healthcare practitioner if taking diabetic or blood clotting medications.",
+      "in_stock": true
+    },
+    {
+      "id": "hh-tinc-03",
+      "name": "Elderberry Immune Shield Syrup",
+      "category": "Tinctures & Elixirs",
+      "price": 22.00,
+      "size": "150ml amber bottle",
+      "description": "Handcrafted botanical immune syrup made with wildcrafted European black elderberries, raw wildflower honey, and cloves.",
+      "ingredients": ["Organic Black Elderberry (Sambucus Nigra)", "Raw Wildflower Honey", "Organic Ceylon Cinnamon", "Organic Cloves", "Organic Apple Cider Vinegar"],
+      "benefits": ["Seasonal defense against colds and flu", "High in Vitamin C and flavonoids", "Soothes irritated throats"],
+      "directions": "Adults: 1 tablespoon daily for maintenance, up to 3 times daily during acute seasonal challenges. Children (over 1 yr): 1 teaspoon.",
+      "cautions": "Contains raw honey — not suitable for infants under 12 months.",
+      "in_stock": true
+    },
+    {
+      "id": "hh-salve-01",
+      "name": "Calendula Rescue Salve",
+      "category": "Salves & Skincare",
+      "price": 18.00,
+      "size": "60g metal tin",
+      "description": "An ultra-gentle, all-natural skin remedy infused with whole organic Calendula petals, cold-pressed jojoba oil, and unrefined beeswax.",
+      "ingredients": ["Organic Calendula Infused Olive Oil", "Organic Jojoba Oil", "Organic Raw Beeswax", "Vitamin E (Tocopherol)", "Roman Chamomile Essential Oil"],
+      "benefits": ["Deeply nourishes chapped skin and dry patches", "Soothes eczema, minor cuts, and burns", "Safe for sensitive skin"],
+      "directions": "Warm a pea-sized amount between fingers and gently massage onto affected dry areas. Reapply as needed.",
+      "cautions": "For external use only. Test a small patch on inner forearm first.",
+      "in_stock": true
+    },
+    {
+      "id": "hh-salve-02",
+      "name": "Arnica Muscle Recovery Balm",
+      "category": "Salves & Skincare",
+      "price": 20.00,
+      "size": "60g metal tin",
+      "description": "Fast-acting topical botanical balm featuring wildcrafted Arnica Montana, menthol crystals, and wintergreen for tired joints and muscles.",
+      "ingredients": ["Arnica Montana Flower Extract", "Organic Beeswax", "Natural Menthol Crystals", "Wintergreen Oil", "Peppermint Oil", "Eucalyptus Oil"],
+      "benefits": ["Relieves tension in stiff necks, backs, and shoulders", "Accelerates post-workout muscle recovery", "Cooling and warming sensations"],
+      "directions": "Massage vigorously into sore joints or muscles after physical exertion.",
+      "cautions": "External use only. Do not apply to broken skin, wounds, or mucous membranes.",
+      "in_stock": true
+    }
+  ]
+}
