@@ -51,3 +51,43 @@ def test_direct_chat_api_endpoint():
     data = res.json()
     assert "reply" in data
     assert data["user_id"] == "test_direct_user"
+
+def test_retriever_symptom_expansion():
+    retriever = KnowledgeRetriever()
+    results = retriever.search_products("I have severe brain fog", top_k=2)
+    assert len(results) > 0
+    assert any("Lion's Mane" in p["name"] for p in results)
+
+def test_widget_js_endpoint():
+    res = client.get("/widget.js")
+    assert res.status_code == 200
+    assert "HerbalHarbourWidgetLoaded" in res.text
+    assert "hh-widget-container" in res.text
+
+def test_training_api_lifecycle():
+    # Fetch current training
+    res_get = client.get("/api/setup/training")
+    assert res_get.status_code == 200
+    data_get = res_get.json()
+    assert "custom_rules" in data_get
+    assert "custom_faqs" in data_get
+
+    # Save new custom training
+    payload = {
+        "custom_rules": ["Always recommend promo code SPECIAL20 for 20% off."],
+        "custom_faqs": [
+            {
+                "question": "Can I pick up in person at Sea Point?",
+                "answer": "Yes, Sea Point pickup is available daily between 10am and 4pm."
+            }
+        ]
+    }
+    res_post = client.post("/api/setup/training", json=payload)
+    assert res_post.status_code == 200
+    assert res_post.json()["success"] is True
+
+    # Test retriever has reloaded and grounding includes the custom data
+    from src.engine.retriever import retriever
+    context = retriever.get_grounding_context("Can I pick up in Sea Point?")
+    assert "SPECIAL20" in context
+    assert "Sea Point pickup" in context

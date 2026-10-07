@@ -151,6 +151,82 @@
             </form>
             <div id="aiAlert" class="hidden text-xs p-2.5 rounded-lg mt-2"></div>
         </div>
+
+        <!-- WEBSITE EMBED CODE CARD -->
+        <div class="mt-8 bg-white rounded-2xl shadow-sm border border-stone-200 p-6">
+            <div class="flex items-center justify-between mb-4">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 rounded-full bg-amber-100 text-amber-700 flex items-center justify-center text-xl">
+                        <i class="fa-solid fa-code"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-stone-900">Website Embed Widget</h3>
+                        <p class="text-xs text-stone-500">1-Line live chat bubble for any website</p>
+                    </div>
+                </div>
+            </div>
+            <p class="text-xs text-stone-600 mb-3">
+                Copy and paste this single script tag right before the closing <code class="bg-stone-100 px-1 py-0.5 rounded text-amber-900 font-mono text-[11px]">&lt;/body&gt;</code> tag of your website (Shopify, WordPress, Wix, Squarespace, or custom HTML):
+            </p>
+            <div class="relative bg-stone-900 text-stone-100 p-4 rounded-xl font-mono text-xs overflow-x-auto flex items-center justify-between">
+                <code id="embedScriptCode" class="text-emerald-400 select-all">&lt;script src="https://YOUR-BOT-URL/widget.js"&gt;&lt;/script&gt;</code>
+                <button onclick="copyEmbedCode()" class="ml-4 bg-emerald-600 hover:bg-emerald-500 text-white text-xs px-3 py-1.5 rounded-lg font-sans font-medium transition shrink-0 flex items-center gap-1.5">
+                    <i class="fa-regular fa-copy"></i>
+                    <span id="copyBtnText">Copy Code</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- TRAIN YOUR BOT & CUSTOM KNOWLEDGE CARD -->
+        <div class="mt-8 bg-white rounded-2xl shadow-sm border border-stone-200 p-6">
+            <div class="flex items-center justify-between mb-4">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 rounded-full bg-purple-100 text-purple-700 flex items-center justify-center text-xl">
+                        <i class="fa-solid fa-graduation-cap"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-stone-900">Train Your Bot & Custom Rules</h3>
+                        <p class="text-xs text-stone-500">Teach the bot store guidelines, delivery nuances, and custom Q&As</p>
+                    </div>
+                </div>
+                <button onclick="saveBotTraining()" id="saveTrainingBtn" class="bg-purple-700 hover:bg-purple-800 text-white text-xs px-4 py-2 rounded-lg font-medium transition shadow-sm flex items-center gap-1.5">
+                    <i class="fa-solid fa-floppy-disk"></i>
+                    <span>Save & Apply Training</span>
+                </button>
+            </div>
+
+            <div id="trainingAlert" class="hidden text-xs p-3 rounded-lg mb-4"></div>
+
+            <div class="space-y-6">
+                <!-- Custom Rules -->
+                <div>
+                    <label class="block text-xs font-semibold text-stone-700 mb-1">
+                        Store Directives & Business Rules (One per line)
+                    </label>
+                    <p class="text-[11px] text-stone-500 mb-2">
+                        Enter any specific instructions or promotions the AI must follow when answering customers.
+                    </p>
+                    <textarea id="customRulesInput" rows="4" class="w-full text-xs p-3 border rounded-xl outline-none focus:ring-2 focus:ring-purple-500 font-mono" placeholder="Always welcome customers warmly.&#10;Mention code WELCOME10 for 10% off.&#10;Free deliveries over R800."></textarea>
+                </div>
+
+                <!-- Custom FAQs -->
+                <div>
+                    <div class="flex items-center justify-between mb-2">
+                        <div>
+                            <label class="block text-xs font-semibold text-stone-700">Custom Questions & Answers</label>
+                            <p class="text-[11px] text-stone-500">Teach specific answers to common customer questions.</p>
+                        </div>
+                        <button onclick="addFaqRow()" class="text-xs text-purple-700 hover:text-purple-800 font-medium flex items-center gap-1 bg-purple-50 hover:bg-purple-100 px-2.5 py-1.5 rounded-lg border border-purple-200">
+                            <i class="fa-solid fa-plus"></i> Add Question
+                        </button>
+                    </div>
+
+                    <div id="faqsList" class="space-y-3">
+                        <!-- Dynamic FAQ rows will be rendered here -->
+                    </div>
+                </div>
+            </div>
+        </div>
     </main>
 
     <script>
@@ -268,6 +344,128 @@
                 alertBox.textContent = 'Network error.';
             }
         });
+
+        // Website Embed Code Population & Copy
+        const embedTag = `<script src="${window.location.origin}/widget.js"><\/script>`;
+        const embedEl = document.getElementById('embedScriptCode');
+        if (embedEl) embedEl.textContent = embedTag;
+
+        function copyEmbedCode() {
+            const code = document.getElementById('embedScriptCode').textContent;
+            navigator.clipboard.writeText(code).then(() => {
+                const btnText = document.getElementById('copyBtnText');
+                if (btnText) {
+                    btnText.textContent = 'Copied!';
+                    setTimeout(() => { btnText.textContent = 'Copy Code'; }, 2000);
+                }
+            });
+        }
+
+        // Custom Training & Knowledge Management
+        let currentFaqs = [];
+
+        function escapeHtml(text) {
+            if (!text) return '';
+            return text.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+        }
+
+        function renderFaqs() {
+            const list = document.getElementById('faqsList');
+            if (!list) return;
+            list.innerHTML = '';
+            if (currentFaqs.length === 0) {
+                list.innerHTML = '<p class="text-xs text-stone-400 italic">No custom Q&As added yet. Click "+ Add Question" to teach specific questions.</p>';
+                return;
+            }
+            currentFaqs.forEach((faq, index) => {
+                const row = document.createElement('div');
+                row.className = 'p-3 bg-stone-50 border border-stone-200 rounded-xl space-y-2';
+                row.innerHTML = `
+                    <div class="flex items-center justify-between">
+                        <span class="text-[11px] font-semibold text-purple-900">Custom Q&A #${index + 1}</span>
+                        <button type="button" onclick="removeFaqRow(${index})" class="text-[11px] text-rose-600 hover:text-rose-800 font-medium">
+                            <i class="fa-solid fa-trash mr-1"></i> Remove
+                        </button>
+                    </div>
+                    <input type="text" value="${escapeHtml(faq.question || '')}" oninput="updateFaq(${index}, 'question', this.value)" placeholder="Customer Question (e.g. Do you deliver to Camps Bay?)" class="w-full text-xs p-2 border rounded-lg bg-white outline-none focus:ring-1 focus:ring-purple-500 font-medium" />
+                    <textarea rows="2" oninput="updateFaq(${index}, 'answer', this.value)" placeholder="Bot Answer (e.g. Yes! We deliver daily between 14:00 and 18:00...)" class="w-full text-xs p-2 border rounded-lg bg-white outline-none focus:ring-1 focus:ring-purple-500">${escapeHtml(faq.answer || '')}</textarea>
+                `;
+                list.appendChild(row);
+            });
+        }
+
+        function addFaqRow() {
+            currentFaqs.push({ question: '', answer: '' });
+            renderFaqs();
+        }
+
+        function removeFaqRow(index) {
+            currentFaqs.splice(index, 1);
+            renderFaqs();
+        }
+
+        function updateFaq(index, field, value) {
+            if (currentFaqs[index]) {
+                currentFaqs[index][field] = value;
+            }
+        }
+
+        async function loadTrainingData() {
+            try {
+                const res = await fetch('/api/setup/training');
+                const data = await res.json();
+                if (data.custom_rules && Array.isArray(data.custom_rules)) {
+                    document.getElementById('customRulesInput').value = data.custom_rules.join('\n');
+                }
+                if (data.custom_faqs && Array.isArray(data.custom_faqs)) {
+                    currentFaqs = data.custom_faqs;
+                    renderFaqs();
+                }
+            } catch (e) {
+                console.error('Failed to load training data', e);
+            }
+        }
+
+        async function saveBotTraining() {
+            const btn = document.getElementById('saveTrainingBtn');
+            const alertBox = document.getElementById('trainingAlert');
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-1"></i> Saving...';
+            alertBox.className = 'hidden';
+
+            const rulesText = document.getElementById('customRulesInput').value;
+            const rules = rulesText.split('\n').map(r => r.trim()).filter(r => r.length > 0);
+            const validFaqs = currentFaqs.filter(f => f.question && f.question.trim());
+
+            try {
+                const res = await fetch('/api/setup/training', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        custom_rules: rules,
+                        custom_faqs: validFaqs
+                    })
+                });
+                const data = await res.json();
+                alertBox.classList.remove('hidden');
+                if (data.success) {
+                    alertBox.className = 'text-xs p-3 rounded-lg bg-emerald-50 text-emerald-800 border border-emerald-200';
+                    alertBox.textContent = `Training updated successfully! (${rules.length} custom rules, ${validFaqs.length} Q&As active)`;
+                } else {
+                    alertBox.className = 'text-xs p-3 rounded-lg bg-rose-50 text-rose-800 border border-rose-200';
+                    alertBox.textContent = data.message || 'Error saving training.';
+                }
+            } catch (e) {
+                alertBox.classList.remove('hidden');
+                alertBox.className = 'text-xs p-3 rounded-lg bg-rose-50 text-rose-800 border border-rose-200';
+                alertBox.textContent = 'Network error saving training.';
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fa-solid fa-floppy-disk mr-1"></i> Save & Apply Training';
+            }
+        }
+
+        loadTrainingData();
     </script>
 </body>
 </html>

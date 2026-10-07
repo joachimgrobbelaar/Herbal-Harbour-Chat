@@ -1,5 +1,6 @@
 import logging
 import asyncio
+import json
 from fastapi import FastAPI, Request, Query, HTTPException, BackgroundTasks, Response
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import PlainTextResponse, HTMLResponse
@@ -10,6 +11,7 @@ from pathlib import Path
 from config.settings import settings
 from src.schemas.models import DirectChatRequest, DirectChatResponse, InboundChatMessage
 from src.engine.llm import chatbot_engine
+from src.engine.retriever import retriever
 from src.channels.whatsapp import whatsapp_channel
 from src.channels.instagram import instagram_channel
 from src.channels.whatsapp_bridge import whatsapp_bridge
@@ -334,6 +336,50 @@ async def configure_gemini_api_key(payload: Dict[str, str]):
     chatbot_engine.api_key = key
     chatbot_engine._init_client()
     return {"success": True, "message": "Gemini API key configured successfully"}
+
+# =========================================================================
+# UNIVERSAL WEBSITE CHAT WIDGET SCRIPT
+# =========================================================================
+@app.get("/widget.js", response_class=Response)
+async def get_chat_widget():
+    widget_path = Path(__file__).resolve().parent / "static" / "widget.js"
+    if widget_path.exists():
+        return Response(content=widget_path.read_text(encoding="utf-8"), media_type="application/javascript")
+    raise HTTPException(status_code=404, detail="Widget script not found")
+
+# =========================================================================
+# BOT TRAINING & CUSTOM KNOWLEDGE API
+# =========================================================================
+@app.get("/api/setup/training")
+async def get_training_data():
+    return {
+        "custom_rules": retriever.custom_rules,
+        "custom_faqs": retriever.custom_faqs
+    }
+
+@app.post("/api/setup/training")
+async def save_training_data(payload: Dict[str, Any]):
+    custom_rules = payload.get("custom_rules", [])
+    custom_faqs = payload.get("custom_faqs", [])
+
+    try:
+        retriever.custom_training_path.parent.mkdir(parents=True, exist_ok=True)
+        with open(retriever.custom_training_path, "w", encoding="utf-8") as f:
+            json.dump({
+                "custom_rules": custom_rules,
+                "custom_faqs": custom_faqs
+            }, f, indent=2)
+
+        retriever.reload()
+        return {
+            "success": True,
+            "message": "Custom knowledge and business rules saved & reloaded successfully!",
+            "rules_count": len(custom_rules),
+            "faqs_count": len(custom_faqs)
+        }
+    except Exception as e:
+        logger.error(f"Failed to save custom training: {e}")
+        return {"success": False, "message": f"Error saving training data: {str(e)}"}
 
 if __name__ == "__main__":
     import uvicorn

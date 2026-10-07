@@ -1,0 +1,11 @@
+{
+  "custom_rules": [
+    "Always recommend promo code SPECIAL20 for 20% off."
+  ],
+  "custom_faqs": [
+    {
+      "question": "Can I pick up in person at Sea Point?",
+      "answer": "Yes, Sea Point pickup is available daily between 10am and 4pm."
+    }
+  ]
+}
