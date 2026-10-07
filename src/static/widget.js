@@ -244,6 +244,65 @@
       0%, 80%, 100% { transform: scale(0); }
       40% { transform: scale(1); }
     }
+    .hh-wa-tool-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      background: #25D366;
+      color: #ffffff;
+      padding: 5px 10px;
+      border-radius: 14px;
+      font-size: 11px;
+      font-weight: 700;
+      text-decoration: none;
+      box-shadow: 0 2px 6px rgba(37, 211, 102, 0.35);
+      transition: transform 0.15s, background 0.15s;
+    }
+    .hh-wa-tool-btn:hover {
+      background: #1ebd5b;
+      transform: scale(1.04);
+    }
+    .hh-chip-wa {
+      background: #ecfdf5 !important;
+      color: #065f46 !important;
+      border-color: #34d399 !important;
+      font-weight: 600;
+    }
+    .hh-wa-send-btn {
+      background: #25D366;
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 34px;
+      height: 34px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 14px;
+      transition: background 0.15s, transform 0.15s;
+    }
+    .hh-wa-send-btn:hover {
+      background: #1ebd5b;
+      transform: scale(1.05);
+    }
+    .hh-msg-wa-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      margin-top: 6px;
+      font-size: 11px;
+      font-weight: 600;
+      color: #059669;
+      text-decoration: none;
+      border-top: 1px dashed #e4e4e7;
+      padding-top: 4px;
+      width: 100%;
+    }
+    .hh-msg-wa-link:hover {
+      color: #047857;
+      text-decoration: underline;
+    }
   `;
   document.head.appendChild(style);
 
@@ -258,18 +317,25 @@
           <div class="hh-header-title">🌿 Herbal Harbour</div>
           <div class="hh-header-status">Apothecary Guide Active</div>
         </div>
-        <button class="hh-close-btn" id="hh-widget-close">&times;</button>
+        <div style="display:flex;align-items:center;gap:8px;">
+          <a class="hh-wa-tool-btn" id="hh-wa-tool" href="#" target="_blank" rel="noopener noreferrer" title="Chat directly on WhatsApp">
+            <span>💬</span><span>WhatsApp</span>
+          </a>
+          <button class="hh-close-btn" id="hh-widget-close">&times;</button>
+        </div>
       </div>
       <div class="hh-messages" id="hh-messages">
         <div class="hh-msg bot">Greetings! 🌿 I am Herbal-Harbour-Chat, your botanical apothecary assistant. How can I help your wellness journey today?</div>
       </div>
       <div class="hh-suggestions">
+        <button class="hh-chip hh-chip-wa" id="hh-chip-wa">📱 Chat on WhatsApp</button>
         <button class="hh-chip" data-msg="What herbs do you recommend for sleep?">😴 Sleep & Calm</button>
         <button class="hh-chip" data-msg="Do you have something for energy and brain focus?">⚡ Energy & Focus</button>
         <button class="hh-chip" data-msg="What are your local delivery options and rates?">📦 Delivery & Orders</button>
       </div>
       <div class="hh-input-bar">
         <input type="text" id="hh-input" placeholder="Ask about teas, tinctures, or remedies..." />
+        <button class="hh-wa-send-btn" id="hh-wa-send" title="Open this question in WhatsApp">📱</button>
         <button class="hh-send-btn" id="hh-send">➤</button>
       </div>
     </div>
@@ -282,6 +348,57 @@
   const messagesBox = document.getElementById('hh-messages');
   const inputEl = document.getElementById('hh-input');
   const sendBtn = document.getElementById('hh-send');
+  const waToolBtn = document.getElementById('hh-wa-tool');
+  const waSendBtn = document.getElementById('hh-wa-send');
+  const waChipBtn = document.getElementById('hh-chip-wa');
+
+  let activeWhatsAppUrl = 'https://wa.me/?text=Hi%20Herbal%20Harbour!';
+
+  // Fetch channels status for WhatsApp link and paired phone
+  fetch(`${baseUrl}/api/channels/status`)
+    .then(r => r.json())
+    .then(data => {
+      if (data && data.whatsapp) {
+        if (data.whatsapp.chatUrl) {
+          activeWhatsAppUrl = data.whatsapp.chatUrl;
+        } else if (data.whatsapp.phone) {
+          activeWhatsAppUrl = `https://wa.me/${data.whatsapp.phone}`;
+        }
+        if (waToolBtn) {
+          waToolBtn.href = activeWhatsAppUrl;
+          if (data.whatsapp.connected) {
+            waToolBtn.title = "WhatsApp Bot Online";
+          }
+        }
+      }
+    })
+    .catch(() => {});
+
+  function openWhatsApp(customText) {
+    const text = customText || (inputEl ? inputEl.value.trim() : '') || 'Hi Herbal Harbour! I would like more information on your natural products.';
+    const separator = activeWhatsAppUrl.includes('?') ? '&' : '?';
+    const finalUrl = `${activeWhatsAppUrl}${separator}text=${encodeURIComponent(text)}`;
+    window.open(finalUrl, '_blank');
+  }
+
+  if (waToolBtn) {
+    waToolBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      openWhatsApp();
+    });
+  }
+
+  if (waSendBtn) {
+    waSendBtn.addEventListener('click', () => {
+      openWhatsApp(inputEl.value.trim());
+    });
+  }
+
+  if (waChipBtn) {
+    waChipBtn.addEventListener('click', () => {
+      openWhatsApp('Hi Herbal Harbour! I want to chat with your team on WhatsApp.');
+    });
+  }
 
   function toggleChat() {
     chatWindow.classList.toggle('hh-open');
@@ -329,7 +446,19 @@
 
       const botDiv = document.createElement('div');
       botDiv.className = 'hh-msg bot';
-      botDiv.textContent = data.reply || "I'm having trouble connecting to the apothecary right now. Please try again soon!";
+      const botText = data.reply || "I'm having trouble connecting to the apothecary right now. Please try again soon!";
+      botDiv.textContent = botText;
+
+      const waAction = document.createElement('a');
+      waAction.className = 'hh-msg-wa-link';
+      waAction.href = '#';
+      waAction.innerHTML = '📱 Continue / Order via WhatsApp &rarr;';
+      waAction.onclick = (e) => {
+        e.preventDefault();
+        openWhatsApp(`Inquiry regarding: ${botText.slice(0, 100)}...`);
+      };
+      botDiv.appendChild(waAction);
+
       messagesBox.appendChild(botDiv);
       messagesBox.scrollTop = messagesBox.scrollHeight;
     } catch (e) {
@@ -350,6 +479,7 @@
   });
 
   document.querySelectorAll('.hh-chip').forEach(chip => {
+    if (chip.id === 'hh-chip-wa') return;
     chip.addEventListener('click', () => {
       const msg = chip.getAttribute('data-msg');
       sendMessage(msg);

@@ -66,6 +66,10 @@
                             <p class="text-xs text-stone-500 mt-1 max-w-xs mx-auto">
                                 The AI assistant is now actively responding to customer inquiries on your WhatsApp.
                             </p>
+                            <a id="waTestChatToolBtn" href="#" target="_blank" class="mt-4 inline-flex items-center space-x-1.5 px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-xs font-bold transition shadow-sm">
+                                <i class="fa-brands fa-whatsapp text-sm"></i>
+                                <span>Test WhatsApp Chat Tool</span>
+                            </a>
                         </div>
                     </div>
 
@@ -247,6 +251,11 @@
                     loading.classList.add('hidden');
                     qrImg.classList.add('hidden');
                     connected.classList.remove('hidden');
+                    const testBtn = document.getElementById('waTestChatToolBtn');
+                    if (testBtn) {
+                        const waUrl = data.user?.chatUrl || (data.user?.phone ? `https://wa.me/${data.user.phone}` : 'https://wa.me/');
+                        testBtn.href = `${waUrl}?text=${encodeURIComponent('Hi Herbal Harbour! Testing the AI Assistant.')}`;
+                    }
                 } else if (data.qr) {
                     badge.className = 'text-xs px-2.5 py-1 rounded-full bg-blue-100 text-blue-800 font-medium';
                     badge.textContent = 'Ready to Scan';
