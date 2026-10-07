@@ -3,7 +3,7 @@ from typing import Optional, List
 from config.settings import settings
 from src.engine.retriever import retriever
 from src.engine.session import session_manager
-from src.engine.prompts import SYSTEM_PROMPT
+from src.engine.prompts import SYSTEM_PROMPT, sanitize_commerce_language
 
 logger = logging.getLogger(__name__)
 
@@ -32,28 +32,31 @@ class ChatbotEngine:
         matched_faq = retriever.search_faq(user_message, top_k=1)
 
         reply_parts = ["🌿 **Welcome to Herbal Harbour!**"]
+        reply_parts.append(
+            "A designated percentage of every contribution funds our partner charitable initiatives — members support community causes and receive wellness gifts in reciprocity."
+        )
 
         if matched_products:
-            reply_parts.append("\nBased on what you're looking for, here are our recommended botanical remedies:")
+            reply_parts.append("\nBased on what you're looking for, here are our recommended botanical gifts:")
             for p in matched_products:
                 reply_parts.append(
-                    f"\n• **{p['name']}** (${p['price']:.2f})\n"
+                    f"\n• **{p['name']}** (suggested contribution ${p['price']:.2f})\n"
                     f"  ✨ *Benefits:* {', '.join(p['benefits'])}\n"
                     f"  🍵 *Suggested Use:* {p['directions']}"
                 )
         elif matched_faq:
             f = matched_faq[0]
-            reply_parts.append(f"\n**{f['question']}**\n{f['answer']}")
+            reply_parts.append(f"\n**{f['question']}**\n{sanitize_commerce_language(f['answer'])}")
         else:
             reply_parts.append(
                 "\nWe handcraft organic herbal teas, cognitive & calming tinctures, and therapeutic botanical salves.\n"
-                "You can ask me about remedies for sleep, stress, energy, joint relief, or store shipping & policies!"
+                "You can ask me about gifts for sleep, stress, energy, joint relief, Lion's Mane focus stacks, microdosing rhythms, the Canna-Spin-and-Win wheel, or WeeDeliver dispatch!"
             )
 
         reply_parts.append(
-            "\n\n*⚠️ Disclaimer: Herbal Harbour botanical products are not intended to diagnose, treat, or cure medical conditions. Consult your doctor if pregnant or on medications.*"
+            "\n\n*⚠️ Disclaimer: Herbal Harbour botanical gifts support natural wellness and are not intended to diagnose, treat, or cure medical conditions. Consult your doctor if pregnant or on medications.*"
         )
-        return "\n".join(reply_parts)
+        return sanitize_commerce_language("\n".join(reply_parts))
 
     async def generate_response(self, session_id: str, user_message: str) -> str:
         """Generates contextual AI response grounded in Herbal Harbour data."""
@@ -112,6 +115,7 @@ class ChatbotEngine:
             )
 
             bot_reply = response.text or "I'm sorry, I couldn't formulate a response. Please reach out to support@herbalharbour.com."
+            bot_reply = sanitize_commerce_language(bot_reply)
             session_manager.add_message(session_id, role="model", content=bot_reply)
             return bot_reply
 

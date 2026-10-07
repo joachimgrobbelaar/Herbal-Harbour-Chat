@@ -21,7 +21,27 @@ SYMPTOM_MAP: Dict[str, List[str]] = {
     "skin": ["calendula", "salve", "eczema", "dry", "rash", "burns"],
     "eczema": ["calendula", "salve", "dry", "skin", "nourish"],
     "digestion": ["ginger", "turmeric", "stomach", "bloating"],
+    "cannabis": ["cannabis", "sleep", "tension", "ease", "restful"],
+    "microdose": ["lion's mane", "clarity", "mood", "fadiman", "stamets"],
+    "microdosing": ["lion's mane", "clarity", "mood", "fadiman", "stamets"],
+    "mushroom": ["lion's mane", "reishi", "cordyceps", "focus"],
+    "spin": ["spin", "wheel", "perk", "charity", "waiver"],
+    "delivery": ["delivery", "dispatch", "courier", "drop"],
+    "weedliver": ["delivery", "dispatch", "courier", "drop"],
+    "weeddeliver": ["delivery", "dispatch", "courier", "drop"],
 }
+
+ECOSYSTEM_CONTEXT = (
+    "[AGY ECOSYSTEM ROLES]\n"
+    "- Herbal Harbour: botanical apothecary (medicinal cannabis guidance, Lion's Mane, microdosing packages).\n"
+    "- Canna-Spin-and-Win: interactive web hub; members spin the wheel to unlock donation perks, bonus herbal samples, delivery fee waivers, and charity multipliers.\n"
+    "- WeeDeliver: private discreet courier; unbranded smell-proof packaging; never disclose driver routes or drop schedules in chat.\n"
+    "- Squigl: digital design studio operating the platform infrastructure.\n"
+    "House rules: cooperative donation model. Never say buy/sell/price/charge/cart/checkout/store/purchase. "
+    "Say donate, contribution tier, gift, mutual aid, care package, allocation. "
+    "A designated percentage of every contribution funds partner charities. Cannabis guidance follows 'start low, go slow'. "
+    "Microdosing rhythms: Fadiman (1 day on, 2 days off) or Stamets stack with Lion's Mane."
+)
 
 
 class KnowledgeRetriever:
@@ -140,6 +160,7 @@ class KnowledgeRetriever:
         matched_faqs = self.search_faq(user_query, top_k=3)
 
         lines = ["[HERBAL HARBOUR STORE PROFILE]"]
+        lines.append(ECOSYSTEM_CONTEXT)
         lines.append(f"Name: {self.business_info.get('name', 'Herbal Harbour')}")
         lines.append(f"Tagline: {self.business_info.get('tagline', '')}")
         lines.append(f"Hours: {self.business_info.get('operating_hours', '')}")
@@ -153,7 +174,7 @@ class KnowledgeRetriever:
         lines.append("\n[AVAILABLE CATALOG PRODUCTS]")
         if matched_products:
             for p in matched_products:
-                lines.append(f"- **{p['name']}** ({p['category']}, ${p['price']:.2f} {self.currency}, {p['size']})")
+                lines.append(f"- **{p['name']}** ({p['category']}, suggested contribution {p['price']:.2f} {self.currency}, {p['size']})")
                 lines.append(f"  Description: {p['description']}")
                 lines.append(f"  Benefits: {', '.join(p['benefits'])}")
                 lines.append(f"  Suggested Use: {p['directions']}")
